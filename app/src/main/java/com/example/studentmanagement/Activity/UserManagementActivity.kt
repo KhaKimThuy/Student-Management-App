@@ -48,7 +48,7 @@ class UserManagementActivity : AppCompatActivity() {
     }
 
     fun loadListOfUser() {
-        adapter = UserListAdapter(userList)
+        adapter = UserListAdapter(userList, this)
         binding.recyclerView.adapter = adapter
     }
 

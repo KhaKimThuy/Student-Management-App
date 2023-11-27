@@ -95,8 +95,7 @@
                 android:layout_weight="1"
                 android:padding="20dp"
                 android:textStyle="bold"
-                android:background="white"
-                android:text="To Ngoc Huyen" />
+                android:background="@color/white"/>
         </LinearLayout>
 
         <LinearLayout
@@ -118,8 +117,7 @@
                 android:layout_weight="1"
                 android:textStyle="bold"
                 android:padding="20dp"
-                android:background="white"
-                android:text="21" />
+                android:background="@color/white"/>
         </LinearLayout>
 
         <LinearLayout
@@ -141,8 +139,7 @@
                 android:layout_weight="1"
                 android:padding="20dp"
                 android:textStyle="bold"
-                android:background="white"
-                android:text="123456789" />
+                android:background="@color/white"/>
         </LinearLayout>
 
         <LinearLayout
@@ -164,8 +161,7 @@
                 android:layout_weight="1"
                 android:padding="20dp"
                 android:textStyle="bold"
-                android:background="white"
-                android:text="on" />
+                android:background="@color/white"/>
         </LinearLayout>
     </LinearLayout>
 
