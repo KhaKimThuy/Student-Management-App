@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuSortByName"
+        android:title="Sort by Name" />
+    <item
+        android:id="@+id/menuSortByAge"
+        android:title="Sort by Age" />
+</menu>
