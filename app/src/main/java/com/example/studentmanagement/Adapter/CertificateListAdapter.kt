@@ -77,7 +77,6 @@ class CertificateListAdapter(
                                 CertificateDAL().UpdateCerti(position)
                                 notifyItemChanged(adapterPosition)
 
-                                Toast.makeText(activity,"Updated certificate",Toast.LENGTH_SHORT).show()
                                 dialog.dismiss()
                             }
                             .setNegativeButton("CANCEL"){

@@ -10,7 +10,7 @@
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="ADD NEW USER"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -23,31 +23,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_arrow_back_24" />
 
     <RadioGroup
         android:id="@+id/radioPos"
-        android:layout_width="380dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView17"
         app:layout_constraintTop_toBottomOf="@+id/textView17">
 
         <RadioButton
             android:id="@+id/rbtnManager"
-            android:layout_width="190dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:text="Manager User"
             android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/rbtnStudent"
-            android:layout_width="190dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:text="Student User"
             android:textSize="16sp" />
@@ -57,30 +58,31 @@
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
         android:text="Position"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgBack" />
+        app:layout_constraintStart_toStartOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Name"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/radioPos"
-        app:layout_constraintTop_toBottomOf="@+id/radioPos" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBack" />
 
     <EditText
         android:id="@+id/edtAddName"
-        android:layout_width="380dp"
+        android:layout_width="350dp"
         android:layout_height="60dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/custom_input_add_user"
         android:ems="10"
         android:inputType="text"
@@ -91,9 +93,9 @@
 
     <EditText
         android:id="@+id/edtAddAge"
-        android:layout_width="380dp"
+        android:layout_width="350dp"
         android:layout_height="60dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/custom_input_add_user"
         android:ems="10"
         android:inputType="number"
@@ -104,9 +106,9 @@
 
     <EditText
         android:id="@+id/edtAddPhone"
-        android:layout_width="380dp"
+        android:layout_width="350dp"
         android:layout_height="60dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/custom_input_add_user"
         android:ems="10"
         android:inputType="text"
@@ -117,9 +119,9 @@
 
     <TextView
         android:id="@+id/textView19"
-        android:layout_width="wrap_content"
+        android:layout_width="29dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="Age"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -130,7 +132,7 @@
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="Number Phone"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -141,33 +143,32 @@
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="Status"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/edtAddPhone"
-        app:layout_constraintTop_toBottomOf="@+id/edtAddPhone" />
+        app:layout_constraintStart_toStartOf="@+id/radioPos"
+        app:layout_constraintTop_toBottomOf="@+id/radioPos" />
 
     <RadioGroup
         android:id="@+id/radioStatus"
-        android:layout_width="380dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView21"
         app:layout_constraintTop_toBottomOf="@+id/textView21">
 
         <RadioButton
             android:id="@+id/rbtnNormal"
-            android:layout_width="190dp"
+            android:layout_width="150dp"
             android:layout_height="60dp"
             android:text="Normal"
             android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/rbtnLocked"
-            android:layout_width="190dp"
+            android:layout_width="150dp"
             android:layout_height="60dp"
             android:text="Locked"
             android:textSize="16sp" />
@@ -175,16 +176,14 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAddNew"
-        android:layout_width="380dp"
+        android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginTop="24dp"
         android:background="@drawable/custom_btn_login"
         android:text="Add New User"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioStatus" />
+        app:layout_constraintStart_toStartOf="@+id/radioStatus"
+        app:layout_constraintTop_toTopOf="@+id/edtAddPhone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

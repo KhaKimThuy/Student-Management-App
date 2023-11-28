@@ -53,12 +53,13 @@ class UserManagementActivity : AppCompatActivity() {
             }
         }
 
-        binding.search.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        binding.search?.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchList(query)
                 //Toast.makeText(context, "Query: $query", Toast.LENGTH_SHORT).show()
                 return false
             }
+
             override fun onQueryTextChange(newText: String): Boolean {
                 return false
             }

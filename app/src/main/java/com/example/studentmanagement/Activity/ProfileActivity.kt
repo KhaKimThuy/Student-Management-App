@@ -44,10 +44,10 @@ class ProfileActivity : AppCompatActivity() {
         certiList = ArrayList<Certificate>()
         CertificateDAL().GetListOfCerti(user, this)
 
-        binding.recyclerViewCertificate.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerViewCertificate.addItemDecoration(
+        binding.recyclerViewCertificate?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerViewCertificate?.addItemDecoration(
             DividerItemDecoration(
-                binding.recyclerViewCertificate.context,
+                binding.recyclerViewCertificate!!.context,
                 DividerItemDecoration.VERTICAL
             )
         )
@@ -65,7 +65,7 @@ class ProfileActivity : AppCompatActivity() {
             finish()
         })
 
-        binding.imageViewDelete.setOnClickListener(View.OnClickListener {
+        binding.imageViewDelete?.setOnClickListener(View.OnClickListener {
             UserDAL().DeleteUser(user, this)
             finish()
         })
@@ -78,7 +78,7 @@ class ProfileActivity : AppCompatActivity() {
                 .start()
         })
 
-        binding.imageViewAddCertificate.setOnClickListener(View.OnClickListener {
+        binding.imageViewAddCertificate?.setOnClickListener(View.OnClickListener {
             showAddCertiDialog()
         })
 
@@ -109,7 +109,7 @@ class ProfileActivity : AppCompatActivity() {
 
     fun loadUserCertificate() {
         adapter = CertificateListAdapter(certiList, this)
-        binding.recyclerViewCertificate.adapter = adapter
+        binding.recyclerViewCertificate?.adapter = adapter
     }
 
     private fun getUpdateInformation() {
