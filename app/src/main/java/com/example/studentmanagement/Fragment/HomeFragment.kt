@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.studentmanagement.Activity.UserManagementActivity
+import com.example.studentmanagement.Common.UserDTO
 import com.example.studentmanagement.R
 import com.example.studentmanagement.databinding.ActivityUserManagementBinding
 import com.example.studentmanagement.databinding.FragmentHomeBinding
@@ -27,10 +28,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.cardViewUserManagement.setOnClickListener(View.OnClickListener {
-            val intent = Intent(requireActivity(), UserManagementActivity::class.java)
-            requireActivity().startActivity(intent)
-        })
-
+        if (UserDTO.currentUser?.position ?: "Student" != "Student") {
+            binding.cardViewUserManagement.setOnClickListener(View.OnClickListener {
+                val intent = Intent(requireActivity(), UserManagementActivity::class.java)
+                requireActivity().startActivity(intent)
+            })
+        } else {
+            binding.cardViewUserManagement.visibility = View.GONE
+        }
     }
 }

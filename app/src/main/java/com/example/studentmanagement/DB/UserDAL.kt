@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.example.studentmanagement.Activity.AddNewUserActivity
@@ -64,7 +65,6 @@ class UserDAL : DBConnection(){
     }
 
     fun UpdateUserProfile(user : User, activity : ProfileActivity) {
-
         var objRef = UserObjectRef(user)
         objRef.child("age")?.setValue(user.age)
         objRef.child("name")?.setValue(user.name)
@@ -75,30 +75,19 @@ class UserDAL : DBConnection(){
     }
 
     fun LoginUser(phone : String, pass : String, activity: LoginActivity) {
-
-        if (phone.contains('.') || phone.contains('#')
-            || phone.contains('$') || phone.contains('[')
-            || phone.contains(']')) {
-
-            activity.binding.edtPhone.error = "User is not exist"
-            activity.binding.edtPhone.requestFocus()
-
-        }else {
-            GetUserRef().addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-
-                    // Check if pk in database
-                    if (snapshot.hasChild(phone)){
-                        val user = snapshot.child(phone).getValue(User::class.java)
-                        if (user != null) {
-                            if(user.phone == phone && user.password == pass){
-                                if (user.status == "Locked") {
-                                    Toast.makeText(activity.applicationContext, "Your account is locked !!!", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    // Save current user
+            val query = GetUserRef().orderByChild("phone")
+                .equalTo(phone).limitToFirst(1)
+            query.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.childrenCount < 1) {
+                        activity.binding.edtPhone.error = "User is not exist"
+                        activity.binding.edtPhone.requestFocus()
+                    }else{
+                        for (snapshot in dataSnapshot.children) {
+                            val user = snapshot.getValue(User::class.java)
+                            if (user != null) {
+                                if (user.password == pass) {
                                     UserDTO.currentUser = user
-
-                                    // Save user's avatar to local
                                     if (user.avatarUrl != "") {
                                         UserDTO.currentUser?.let {PicassoToBitmap(it.avatarUrl) }
                                     }
@@ -106,35 +95,32 @@ class UserDAL : DBConnection(){
                                     Toast.makeText(activity.applicationContext, "Login successfully", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(activity.applicationContext, HomePageActivity::class.java)
                                     activity.startActivity(intent)
+                                }else{
+                                    activity.binding.edtPassword.error = "Wrong password"
+                                    activity.binding.edtPassword.requestFocus()
                                 }
-                            }else{
-                                activity.binding.edtPassword.error = "Wrong password"
-                                activity.binding.edtPassword.requestFocus()
                             }
                         }
-                    }else{
-                        activity.binding.edtPhone.error = "User is not exist"
-                        activity.binding.edtPhone.requestFocus()
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(activity.applicationContext, "System error", Toast.LENGTH_LONG).show()
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle any errors
                 }
             })
-        }
     }
 
-    fun UpdateAvatar (byteArray : ByteArray) {
-        val uploadTask = UserDTO.currentUser.phone?.let { storageRef.child("$it.jpeg").putBytes(byteArray) }
+    fun UpdateAvatar (byteArray : ByteArray, user : User) {
+        val uploadTask = user.pk?.let { storageRef.child("$it.jpeg").putBytes(byteArray) }
         if (uploadTask != null) {
             uploadTask.addOnSuccessListener { taskSnapshot ->
                 val downloadUrlTask: Task<Uri> = taskSnapshot.storage.downloadUrl
                 downloadUrlTask.addOnSuccessListener { uri ->
-                    val root = UserDTO.currentUser.phone?.let { it1 -> GetUserRef().child(it1) }
+//                    val root = user.pk?.let { it1 -> GetUserRef().child(it1) }
+                    val root = UserObjectRef(user)
                     val newAvatarUrl = uri.toString()
                     root?.child("avatarUrl")?.setValue(newAvatarUrl)
-                    UserDTO.currentUser?.let {PicassoToBitmap(newAvatarUrl) }
+
                 }
             }?.addOnFailureListener {
 
@@ -149,23 +135,40 @@ class UserDAL : DBConnection(){
         } else {
             query = GetUserRef().orderByChild("position").equalTo(position)
         }
-        activity.userList.clear()
-        query .addValueEventListener(object : ValueEventListener {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    val user = snapshot.getValue(User::class.java)
-                    if (user != null) {
-                        if (user.position != "Admin") {
-                            activity.userList.add(user)
+//                if (!activity.updateUser) {
+                    activity.userList.clear()
+                    for (snapshot in dataSnapshot.children) {
+                        if (snapshot != null) {
+                            Log.d("TAG","Get list of user")
+                            val user = snapshot.getValue(User::class.java)
+                            if (user != null) {
+                                if (user.position != "Admin") {
+                                    activity.userList.add(user)
+                                }
+                            }
                         }
-                    }
+//                    }
+                    activity.updateUser = true
+                    activity.loadListOfUser()
                 }
-                activity.loadListOfUser()
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle any errors
             }
         })
+    }
+
+    fun DeleteUser(user : User, activity: ProfileActivity) {
+        GetUserRef().child(user.pk).removeValue()
+            .addOnSuccessListener {
+                Toast.makeText(activity, "Delete user successfully", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { error ->
+                // Handle the error
+                Toast.makeText(activity, "Fail to delete", Toast.LENGTH_SHORT).show()
+            }
     }
 
     fun PicassoToBitmap(imgUrl : String) {

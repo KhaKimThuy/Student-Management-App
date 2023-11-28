@@ -1,6 +1,8 @@
 package com.example.studentmanagement.Adapter
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +12,19 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.studentmanagement.Activity.ProfileActivity
 import com.example.studentmanagement.Activity.UserManagementActivity
+import com.example.studentmanagement.DB.UserDAL
 import com.example.studentmanagement.Domain.User
 import com.example.studentmanagement.R
 import com.squareup.picasso.Picasso
+import java.io.ByteArrayOutputStream
 
 class UserListAdapter(
-    private val userList: ArrayList<User>,
+    private var userList: ArrayList<User>,
     activity: UserManagementActivity
 ) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>(){
 
-
     var activity = activity
-
+    var searchList = ArrayList<User>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -43,10 +46,17 @@ class UserListAdapter(
         holder.pos.text = userList[position].position
 
         holder.itemView.setOnClickListener(View.OnClickListener {
-            val intent = Intent(activity, ProfileActivity::class.java)
+//            activity.changeInfoOfUser(position)
+            val intent = Intent(activity.applicationContext, ProfileActivity::class.java)
+            intent.putExtra("position", position)
             intent.putExtra("user", userList[position])
-            activity.startActivity(intent)
+            activity.startActivityForResult(intent, activity.UPDATE_USER_CODE)
         })
+    }
+
+    fun searchDataList(searchList: ArrayList<User>) {
+        userList = searchList
+        notifyDataSetChanged()
     }
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

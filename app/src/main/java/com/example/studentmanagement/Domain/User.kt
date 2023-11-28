@@ -2,6 +2,7 @@ package com.example.studentmanagement.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.util.Calendar
 
 class User() : Parcelable{
     var pk : String = ""
@@ -12,6 +13,7 @@ class User() : Parcelable{
     var position : String = ""
     var age : String = ""
     var status : String = ""
+//    var lastLogin : Date = Calendar.getInstance().time
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString().toString()
@@ -30,6 +32,7 @@ class User() : Parcelable{
 
     override fun writeToParcel(parcel: Parcel, p1: Int) {
         parcel.writeString(pk)
+        parcel.writeString(phone)
         parcel.writeString(password)
         parcel.writeString(name)
         parcel.writeString(avatarUrl)

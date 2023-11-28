@@ -33,6 +33,9 @@ class ProfileFragment : Fragment() {
             //Image Uri will not be null for RESULT_OK
             val fileUri = data?.data!!
             binding.imgAvatar.setImageURI(fileUri)
+
+            val inputStream = fileUri?.let { requireActivity().contentResolver.openInputStream(it) }
+            UserDTO.userAvatar =  BitmapFactory.decodeStream(inputStream)
             uploadAvatar()
 
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
@@ -69,17 +72,17 @@ class ProfileFragment : Fragment() {
     }
 
     fun loadUserProfile() {
-        if (UserDTO.currentUser.avatarUrl == "") {
+        if (UserDTO.currentUser?.avatarUrl ?: "" == "") {
             binding.imgAvatar.setImageResource(R.drawable.user)
         } else {
             binding.imgAvatar.setImageBitmap(UserDTO.userAvatar)
         }
-        binding.tvUsername2.text = UserDTO.currentUser.name
-        binding.tvPosition2.text = UserDTO.currentUser.position
-        binding.tvName.text = UserDTO.currentUser.name
-        binding.tvAge.text = UserDTO.currentUser.age
-        binding.tvPhone.text = UserDTO.currentUser.phone
-        binding.tvStatus.text = UserDTO.currentUser.status
+        binding.tvUsername2.text = UserDTO.currentUser?.name ?: "Error"
+        binding.tvPosition2.text = UserDTO.currentUser?.position ?: "Error"
+        binding.tvName.text = UserDTO.currentUser?.name ?: "Error"
+        binding.tvAge.text = UserDTO.currentUser?.age ?: "Error"
+        binding.tvPhone.text = UserDTO.currentUser?.phone ?: "Error"
+        binding.tvStatus.text = UserDTO.currentUser?.status ?: "Error"
     }
 
     private fun uploadAvatar() {
@@ -89,19 +92,8 @@ class ProfileFragment : Fragment() {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
 
-        UserDAL().UpdateAvatar(byteArray)
+
+
+        UserDTO.currentUser?.let { UserDAL().UpdateAvatar(byteArray, it) }
     }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        Toast.makeText(requireActivity().applicationContext, "ddddddd", Toast.LENGTH_SHORT).show()
-//
-//        val uri = data?.data
-//        binding.imgAvatar.setImageURI(uri)
-//        val inputStream = uri?.let { requireActivity().contentResolver.openInputStream(it) }
-//
-//        UserDTO.userAvatar = BitmapFactory.decodeStream(inputStream)
-//    }
-
 }

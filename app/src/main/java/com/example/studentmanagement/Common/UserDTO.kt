@@ -5,7 +5,7 @@ import com.example.studentmanagement.Domain.User
 
 class UserDTO{
     companion object {
-        lateinit var currentUser: User
+        var currentUser: User? = null
         var userAvatar: Bitmap? = null
     }
 }
