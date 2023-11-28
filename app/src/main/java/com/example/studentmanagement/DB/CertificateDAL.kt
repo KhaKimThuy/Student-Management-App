@@ -20,16 +20,19 @@ class CertificateDAL : DBConnection() {
         return database.getReference("Certificate")
     }
 
-    fun CreateNewCerti(certi : Certificate, activity : ProfileActivity) {
-        Toast.makeText(activity, "System error", Toast.LENGTH_SHORT).show()
+    fun CreateNewCerti(certi : Certificate) {
+        var pk = GetCertificateRef().push().key
+        if (pk != null) {
+            certi.pk = pk
+        }
         GetCertificateRef().addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (certi.pk?.let { snapshot.hasChild(it) } == true){
-                    Toast.makeText(activity, "Create certificate error", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(activity, "Create certificate error", Toast.LENGTH_SHORT).show()
                 } else {
                     if (certi.pk != null) {
                         GetCertificateRef().child(certi.pk).setValue(certi)
-                        Toast.makeText(activity, "Create certificate successfully", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(activity, "Create certificate successfully", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

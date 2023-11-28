@@ -2,6 +2,7 @@ package com.example.studentmanagement.Activity
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -9,7 +10,11 @@ import android.os.Bundle
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.studentmanagement.Adapter.CertificateListAdapter
@@ -22,7 +27,11 @@ import com.example.studentmanagement.R
 import com.example.studentmanagement.databinding.ActivityProfileBinding
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.squareup.picasso.Picasso
+import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding : ActivityProfileBinding
@@ -31,11 +40,16 @@ class ProfileActivity : AppCompatActivity() {
     private var userPosition : Int = -1
     private var changeAvatar : Boolean = false
     lateinit var certiList : ArrayList<Certificate>
+    private val READ_EXTERNAL_STORAGE_REQUEST = 110
+    private val PICK_CSV_FILE_REQUEST = 111
+    lateinit var importedCerti : ArrayList<Certificate>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        importedCerti = ArrayList<Certificate>()
 
         user = intent.getParcelableExtra("user")!!
         userPosition = intent.getIntExtra("position", -1)
@@ -53,6 +67,14 @@ class ProfileActivity : AppCompatActivity() {
         )
 
         binding.btnUpdate.setOnClickListener(View.OnClickListener {
+            // Certification
+            for (certi in importedCerti) {
+                certi.userPK = user.pk
+                CertificateDAL().CreateNewCerti(certi)
+            }
+            importedCerti.clear()
+
+            // User information
             getUpdateInformation()
             if (changeAvatar) {
                 uploadAvatar()
@@ -82,7 +104,15 @@ class ProfileActivity : AppCompatActivity() {
             showAddCertiDialog()
         })
 
-//        registerForContextMenu(binding.recyclerViewCertificate)
+        binding.importCerti?.setOnClickListener(View.OnClickListener {
+            importCSVFile()
+        })
+
+    }
+
+    fun updateUIAdapter(certi : Certificate) {
+        certiList.add(certi)
+        adapter.notifyDataSetChanged()
     }
 
 //    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
@@ -122,10 +152,17 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK && requestCode != PICK_CSV_FILE_REQUEST) {
             val uri: Uri = data?.data!!
             binding.imgAvatar.setImageURI(uri)
             changeAvatar = true
+
+        } else {
+
+            if (requestCode == PICK_CSV_FILE_REQUEST && data != null) {
+                fileuri = data.data
+                fileuri?.let { loadCSVFile(it) }
+            }
         }
     }
 
@@ -144,5 +181,70 @@ class ProfileActivity : AppCompatActivity() {
         val certiDialog = AddCertiDialog("Add certificate for student", this)
         certiDialog.show(supportFragmentManager, "Certificate dialog")
 
+    }
+
+
+
+
+
+
+    private fun importCSVFile() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), READ_EXTERNAL_STORAGE_REQUEST)
+        } else {
+            openFilePicker()
+        }
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            READ_EXTERNAL_STORAGE_REQUEST -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openFilePicker()
+                } else {
+                }
+            }
+        }
+    }
+
+    private fun openFilePicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            type = "*/*"
+            addCategory(Intent.CATEGORY_OPENABLE)
+        }
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+        startActivityForResult(intent, PICK_CSV_FILE_REQUEST)
+    }
+
+    private var fileuri: Uri? = null
+
+
+    private fun loadCSVFile(uri: Uri) {
+        try {
+            val inputStream: InputStream? = contentResolver.openInputStream(uri)
+            val reader = BufferedReader(InputStreamReader(inputStream))
+            var line : String?
+            while (reader.readLine().also { line = it } != null) {
+                val row : List<String> = line!!.split(",")
+                try {
+                    var certi = Certificate()
+                    certi.certiName = row[0]
+                    certi.certiContent = row[1]
+                    importedCerti.add(certi)
+
+                    certiList.add(certi)
+                    adapter.notifyDataSetChanged()
+
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            inputStream?.close() // Close the inputStream when done
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Import file error", Toast.LENGTH_SHORT).show()
+        }
     }
 }

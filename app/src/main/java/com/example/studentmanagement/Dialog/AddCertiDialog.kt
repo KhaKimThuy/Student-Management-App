@@ -14,7 +14,7 @@ import com.example.studentmanagement.R
 
 class AddCertiDialog(
     title: String,
-    activity: ProfileActivity? = null) : AppCompatDialogFragment() {
+    activity: ProfileActivity) : AppCompatDialogFragment() {
 
     private lateinit var certiName : EditText
     private lateinit var certiDesc : EditText
@@ -34,9 +34,21 @@ class AddCertiDialog(
             .setNegativeButton("CANCEL") { _, _ ->
             }
             .setPositiveButton("ADD") { dialog, _ ->
-                    if (addCerti()) {
-                        dialog.dismiss()
-                    }
+//                    if (addCerti()) {
+//                    }
+
+                if (certiName.text.toString().isEmpty()) {
+                    certiName.error = "Certificate name is required"
+                } else {
+                    val certi = Certificate()
+                    certi.certiName = certiName.text.toString()
+                    certi.certiContent = certiDesc.text.toString()
+                    activity.importedCerti.add(certi)
+
+                    activity.updateUIAdapter(certi)
+                    dialog.dismiss()
+
+                }
             }
 
 
@@ -44,20 +56,20 @@ class AddCertiDialog(
         return builder.create()
     }
 
-    private fun addCerti() : Boolean {
-        if (certiName.text.toString().isEmpty()) {
-            certiName.error = "Certificate name is required"
-        } else {
-            val certi = Certificate()
-            certi.pk = CertificateDAL().GetCertificateRef().push().key!!
-            certi.userPK = activity?.user?.pk ?: "null"
-            certi.certiName = certiName.text.toString()
-            certi.certiContent = certiDesc.text.toString()
-            if (activity != null) {
-                CertificateDAL().CreateNewCerti(certi, activity)
-                return true
-            }
-        }
-        return false
-    }
+//    private fun addCerti() : Boolean {
+//        if (certiName.text.toString().isEmpty()) {
+//            certiName.error = "Certificate name is required"
+//        } else {
+//            val certi = Certificate()
+//            certi.pk = CertificateDAL().GetCertificateRef().push().key!!
+//            certi.userPK = activity?.user?.pk ?: "null"
+//            certi.certiName = certiName.text.toString()
+//            certi.certiContent = certiDesc.text.toString()
+//            if (activity != null) {
+//                CertificateDAL().CreateNewCerti(certi)
+//                return true
+//            }
+//        }
+//        return false
+//    }
 }
