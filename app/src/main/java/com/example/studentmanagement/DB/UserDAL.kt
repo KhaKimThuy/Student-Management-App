@@ -33,7 +33,7 @@ class UserDAL : DBConnection(){
         return database.getReference("User")
     }
 
-    fun CreateNewUser(user : User, activity : AddNewUserActivity) {
+    fun CreateNewUser(user : User, activity : AddNewUserActivity? = null) {
         var pk = GetUserRef().push().key
         if (pk != null) {
             user.pk = pk
@@ -41,21 +41,24 @@ class UserDAL : DBConnection(){
         GetUserRef().addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (pk?.let { snapshot.hasChild(it) } == true){
-                    Toast.makeText(activity.applicationContext,"Number phone is already registered", Toast.LENGTH_SHORT).show()
+                    if (activity != null) {
+                        Toast.makeText(activity.applicationContext,"Number phone is already registered", Toast.LENGTH_SHORT).show()
+                    }
                 }else{
                     if (pk != null) {
                         GetUserRef().child(pk).setValue(user)
                     }
-                    Toast.makeText(activity.applicationContext, "Create user successfully", Toast.LENGTH_SHORT).show()
-                    var intent = Intent(activity, HomePageActivity::class.java)
-                    activity.startActivity(intent)
-                    activity.finish()
+                    if (activity != null) {
+                        Toast.makeText(activity.applicationContext, "Create user successfully", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
-                Toast.makeText(activity.applicationContext,"Fail to register, error system!", Toast.LENGTH_LONG).show()
+                if (activity != null) {
+                    Toast.makeText(activity.applicationContext,"Fail to register, error system!", Toast.LENGTH_LONG).show()
+                }
             }
         })
     }

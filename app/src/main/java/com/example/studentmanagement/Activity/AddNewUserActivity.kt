@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.studentmanagement.DB.UserDAL
 import com.example.studentmanagement.Domain.User
 import com.example.studentmanagement.databinding.ActivityAddNewUserBinding
@@ -14,7 +16,6 @@ class AddNewUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddNewUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         binding.btnAddNew.setOnClickListener(View.OnClickListener {
 
