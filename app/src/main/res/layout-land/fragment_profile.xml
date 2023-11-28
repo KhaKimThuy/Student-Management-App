@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f1f1f1"
-    android:paddingHorizontal="16dp">
+    android:background="#f1f1f1">
 
     <TextView
         android:id="@+id/tvPosition2"
@@ -42,38 +41,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="----------------"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgAvatar" />
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgAvatar"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_marginStart="-80dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="40dp"
         android:elevation="2dp"
-        android:src="@drawable/user"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="380dp"
         android:layout_height="240dp"
-        android:layout_marginTop="40dp"
         android:background="@drawable/custom_form_login"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10">
+        app:layout_constraintStart_toEndOf="@+id/tvUsername2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,13 +74,13 @@
                 android:padding="20dp"
                 android:text="Name" />
 
-            <EditText
+            <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
                 android:layout_weight="1"
-                android:background="@drawable/custom_profile_top"
                 android:padding="20dp"
+                android:text="To Ngoc Huyen"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -109,13 +96,13 @@
                 android:padding="20dp"
                 android:text="Age" />
 
-            <EditText
+            <TextView
                 android:id="@+id/tvAge"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
                 android:layout_weight="1"
-                android:background="@color/white"
                 android:padding="20dp"
+                android:text="21"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -131,13 +118,13 @@
                 android:padding="20dp"
                 android:text="Phone Number" />
 
-            <EditText
+            <TextView
                 android:id="@+id/tvPhone"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
                 android:layout_weight="1"
-                android:background="@color/white"
                 android:padding="20dp"
+                android:text="123456789"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -153,13 +140,13 @@
                 android:padding="20dp"
                 android:text="Status" />
 
-            <EditText
+            <TextView
                 android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
                 android:layout_weight="1"
-                android:background="@drawable/custom_profile_bottom"
                 android:padding="20dp"
+                android:text="on"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
@@ -168,21 +155,10 @@
         android:id="@+id/imageView_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="-15dp"
+        android:layout_marginLeft="-35dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/imgAvatar"
         app:layout_constraintStart_toEndOf="@+id/imgAvatar"
         app:srcCompat="@drawable/baseline_camera_alt_24" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_update"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:background="#03A9F4"
-        android:text="Update"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
