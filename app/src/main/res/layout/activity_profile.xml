@@ -189,10 +189,12 @@
                 app:srcCompat="@drawable/baseline_camera_alt_24" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="16dp"
+                android:background="#FFFEF6"
                 android:paddingVertical="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -216,10 +218,12 @@
                         android:text="Certificates"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
+
                     <ImageView
                         android:id="@+id/imageView_addCertificate"
                         android:layout_width="28dp"
@@ -243,7 +247,7 @@
                 android:background="#03A9F4"
                 android:text="Update"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
                 tools:layout_editor_absoluteX="16dp" />
 
             <ImageView
