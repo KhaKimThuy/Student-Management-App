@@ -63,7 +63,7 @@ class HomePageActivity : AppCompatActivity() {
             true
         }
 
-        if (UserDTO.currentUser?.position ?: "" == "Admin") {
+        if (UserDTO.currentUser?.position ?: "Student" != "Student") {
             binding.imgAddNew.visibility = View.VISIBLE
             binding.imgAddNew.setOnClickListener(View.OnClickListener {
 //                val intent = Intent(this, AddNewUserActivity::class.java)

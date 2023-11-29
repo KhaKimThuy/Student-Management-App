@@ -3,6 +3,7 @@ package com.example.studentmanagement.Domain
 import android.os.Parcel
 import android.os.Parcelable
 import java.util.Calendar
+import java.util.Date
 
 class User() : Parcelable{
     var pk : String = ""
@@ -13,7 +14,7 @@ class User() : Parcelable{
     var position : String = ""
     var age : String = ""
     var status : String = ""
-//    var lastLogin : Date = Calendar.getInstance().time
+    var lastLogin : String = ""
 
     constructor(parcel: Parcel) : this() {
         pk = parcel.readString().toString()
@@ -24,6 +25,7 @@ class User() : Parcelable{
         position = parcel.readString().toString()
         age = parcel.readString().toString()
         status = parcel.readString().toString()
+        lastLogin = parcel.readString().toString()
     }
 
     override fun describeContents(): Int {
@@ -39,6 +41,7 @@ class User() : Parcelable{
         parcel.writeString(position)
         parcel.writeString(age)
         parcel.writeString(status)
+        parcel.writeString(lastLogin)
     }
 
     companion object CREATOR : Parcelable.Creator<User> {

@@ -3,6 +3,7 @@ package com.example.studentmanagement.Activity
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.studentmanagement.Adapter.CertificateListAdapter
+import com.example.studentmanagement.Common.UserDTO
 import com.example.studentmanagement.DB.CertificateDAL
 import com.example.studentmanagement.DB.UserDAL
 import com.example.studentmanagement.Dialog.AddCertiDialog
@@ -128,14 +130,33 @@ class ProfileActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete -> {
-
-                UserDAL().DeleteUser(user, this)
-                finish()
-
+                deleteDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    @Throws(Resources.NotFoundException::class)
+    private fun deleteDialog() {
+        var userP = ""
+        if (UserDTO.currentUser?.position ?: "Student" == "Admin") {
+            userP = "user";
+        } else if ((UserDTO.currentUser?.position ?: "Student" == "Manager")) {
+            userP = "student";
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("Confirm")
+            .setIcon(R.drawable.warning)
+            .setMessage("Are you sure delete this $userP?")
+            .setPositiveButton("Delete") { dialog, _ ->
+                UserDAL().DeleteUser(user, this)
+                dialog.dismiss()
+                finish()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     fun updateUIAdapter(certi : Certificate) {
@@ -157,6 +178,11 @@ class ProfileActivity : AppCompatActivity() {
         binding.tvPhone.setText(user.phone)
         binding.tvStatus.setText(user.status)
 
+        if (user.lastLogin.isEmpty()) {
+            binding.tvLoginHistory?.text = "User have not logged once"
+        }else {
+            binding.tvLoginHistory?.text = user.lastLogin
+        }
     }
 
     fun loadUserCertificate() {

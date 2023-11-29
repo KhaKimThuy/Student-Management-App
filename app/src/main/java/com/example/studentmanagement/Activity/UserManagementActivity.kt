@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.studentmanagement.Adapter.UserListAdapter
+import com.example.studentmanagement.Common.UserDTO
 import com.example.studentmanagement.DB.UserDAL
 import com.example.studentmanagement.Domain.User
 import com.example.studentmanagement.R
@@ -31,6 +32,22 @@ class UserManagementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUserManagementBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        when (UserDTO.currentUser?.position) {
+            "Admin" -> {
+                supportActionBar?.title = "User Management";
+            }
+            "Manager" -> {
+                supportActionBar?.title = "Student Management";
+            }
+            "Student" -> {
+                supportActionBar?.title = "List of people";
+            }
+        }
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setDisplayShowHomeEnabled(true);
 
         userList = ArrayList<User>()
 
@@ -69,7 +86,9 @@ class UserManagementActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.manage_menu, menu)
+        if (!UserDTO.currentUser?.position.equals("Student")) {
+            menuInflater.inflate(R.menu.manage_menu, menu)
+        }
         return true
     }
 
@@ -84,10 +103,6 @@ class UserManagementActivity : AppCompatActivity() {
 
                 true
             }
-//            R.id.menu_item2 -> {
-//                // Handle menu item 2 selection
-//                true
-//            }
             else -> super.onOptionsItemSelected(item)
         }
     }

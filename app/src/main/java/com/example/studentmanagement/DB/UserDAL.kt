@@ -27,6 +27,7 @@ import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class UserDAL : DBConnection(){
     fun GetUserRef(): DatabaseReference {
@@ -91,6 +92,10 @@ class UserDAL : DBConnection(){
                             if (user != null) {
                                 if (user.password == pass) {
                                     UserDTO.currentUser = user
+                                    UserDTO.lastLogin = user.lastLogin
+
+                                    UpdateLastLogin(user)
+
                                     if (user.avatarUrl != "") {
                                         UserDTO.currentUser?.let {PicassoToBitmap(it.avatarUrl) }
                                     }
@@ -111,6 +116,10 @@ class UserDAL : DBConnection(){
                     // Handle any errors
                 }
             })
+    }
+
+    fun UpdateLastLogin(user : User) {
+        UserObjectRef(user).child("lastLogin").setValue(Calendar.getInstance().time.toString())
     }
 
     fun UpdateAvatar (byteArray : ByteArray, user : User) {
