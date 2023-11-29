@@ -4,6 +4,8 @@ import android.R.attr
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
@@ -64,10 +66,31 @@ class UserManagementActivity : AppCompatActivity() {
                 return false
             }
         })
-
-
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.manage_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.export -> {
+
+                val intent = Intent(this, AddMultiUserActivity::class.java)
+                intent.putExtra("target", "export")
+                intent.putParcelableArrayListExtra("userList", userList)
+                startActivity(intent)
+
+                true
+            }
+//            R.id.menu_item2 -> {
+//                // Handle menu item 2 selection
+//                true
+//            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     fun searchList(text: String) {
         val searchList = java.util.ArrayList<User>()

@@ -50,26 +50,6 @@ class AddCertiDialog(
 
                 }
             }
-
-
-
         return builder.create()
     }
-
-//    private fun addCerti() : Boolean {
-//        if (certiName.text.toString().isEmpty()) {
-//            certiName.error = "Certificate name is required"
-//        } else {
-//            val certi = Certificate()
-//            certi.pk = CertificateDAL().GetCertificateRef().push().key!!
-//            certi.userPK = activity?.user?.pk ?: "null"
-//            certi.certiName = certiName.text.toString()
-//            certi.certiContent = certiDesc.text.toString()
-//            if (activity != null) {
-//                CertificateDAL().CreateNewCerti(certi)
-//                return true
-//            }
-//        }
-//        return false
-//    }
 }

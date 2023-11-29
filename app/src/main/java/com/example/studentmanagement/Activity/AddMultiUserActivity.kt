@@ -1,28 +1,22 @@
 package com.example.studentmanagement.Activity
 
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.studentmanagement.Adapter.AddMultiUserAdapter
-import com.example.studentmanagement.Adapter.UserListAdapter
 import com.example.studentmanagement.DB.UserDAL
 import com.example.studentmanagement.Domain.User
 import com.example.studentmanagement.R
 import com.example.studentmanagement.databinding.ActivityAddMultiUserBinding
-import com.example.studentmanagement.databinding.ActivityAddNewUserBinding
-import com.example.studentmanagement.databinding.ActivityHomePageBinding
-import java.io.BufferedReader
+import java.io.File
 import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
 
 class AddMultiUserActivity : AppCompatActivity() {
 
@@ -30,6 +24,7 @@ class AddMultiUserActivity : AppCompatActivity() {
 
     private lateinit var  userList : ArrayList<User>
     private lateinit var adapter: AddMultiUserAdapter
+    private lateinit var target : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,23 +41,97 @@ class AddMultiUserActivity : AppCompatActivity() {
 
 
         userList = ArrayList<User>()
+
+        target = intent.getStringExtra("target").toString()
+        if (target == "import") {
+            binding.buttonAdd.text = "Import"
+        } else {
+            binding.buttonAdd.text = "Export"
+        }
+
         userList = intent.getParcelableArrayListExtra("userList")!!
 
 
         loadListOfUser()
-
         binding.buttonAdd.setOnClickListener(View.OnClickListener {
-            for (user in userList) {
-                user.position = "Student"
-                user.avatarUrl = ""
-                user.password = user.phone
-                UserDAL().CreateNewUser(user)
+            if (binding.buttonAdd.text == "Import") {
+                for (user in userList) {
+                    user.position = "Student"
+                    user.avatarUrl = ""
+                    user.password = user.phone
+                    UserDAL().CreateNewUser(user)
+                }
+                Toast.makeText(this, "Added " + userList.size + " students", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, UserManagementActivity::class.java)
+                startActivity(intent)
+                finish()
+
+            } else {
+                // Export list of students in csv form
+                askFileName()
             }
-            Toast.makeText(this, "Added " + userList.size + " students", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, UserManagementActivity::class.java)
-            startActivity(intent)
-            finish()
+
         })
+    }
+
+
+    private fun askFileName() {
+        val v = this.layoutInflater.inflate(R.layout.ask_filename_dialog, null)
+        val fileName = v.findViewById<EditText>(R.id.edt_fileName)
+        AlertDialog.Builder(this).setView(v)
+            .setPositiveButton("OK"){
+                    dialog,_->
+                exportFile(fileName.text.toString())
+                dialog.dismiss()
+            }
+            .setNegativeButton("CANCEL"){
+                    dialog,_->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+
+    private fun <T> csvOf(
+        headers: List<String>,
+        data: List<T>,
+        itemBuilder: (T) -> List<String>
+    ) = buildString {
+        append(headers.joinToString(",") { "$it" })
+        append("\n")
+        data.forEach { item ->
+            append(itemBuilder(item).joinToString(",") { "$it" })
+            append("\n")
+        }
+    }
+
+    private fun exportFile(fileName:String) {
+        if (fileName.isEmpty()) {
+            Toast.makeText(this, "File name must not be empty", Toast.LENGTH_SHORT).show()
+        }else{
+            val csvContent = csvOf(
+                listOf("name", "age", "phone", "status"),
+                userList
+            ) {
+                listOf(it.name, it.age, it.phone, it.status)
+            }
+
+            val fileName = "$fileName.csv"
+            val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val file = File(downloadsDirectory, fileName)
+
+            try {
+                file.writeText(csvContent)
+                Toast.makeText(this, "CSV file exported successfully", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Toast.makeText(this, "Error exporting CSV file", Toast.LENGTH_SHORT).show()
+            }
+
+            finish()
+
+        }
     }
 
     private fun loadListOfUser() {

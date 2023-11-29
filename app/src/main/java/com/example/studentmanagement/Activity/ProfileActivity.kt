@@ -7,11 +7,15 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.ContextMenu
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -29,6 +33,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.squareup.picasso.Picasso
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -48,6 +53,11 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.title = "Profile";
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setDisplayShowHomeEnabled(true);
+
 
         importedCerti = ArrayList<Certificate>()
 
@@ -87,11 +97,6 @@ class ProfileActivity : AppCompatActivity() {
             finish()
         })
 
-        binding.imageViewDelete?.setOnClickListener(View.OnClickListener {
-            UserDAL().DeleteUser(user, this)
-            finish()
-        })
-
         binding.imageViewCamera.setOnClickListener(View.OnClickListener {
             ImagePicker.with(this)
                 .crop()	    			//Crop image(Optional), Check Customization for more option
@@ -108,18 +113,35 @@ class ProfileActivity : AppCompatActivity() {
             importCSVFile()
         })
 
+        binding.exportCerti?.setOnClickListener(View.OnClickListener {
+            askFileName()
+        })
+
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.user_profile_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete -> {
+
+                UserDAL().DeleteUser(user, this)
+                finish()
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     fun updateUIAdapter(certi : Certificate) {
         certiList.add(certi)
         adapter.notifyDataSetChanged()
     }
-
-//    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
-//        super.onCreateContextMenu(menu, v, menuInfo)
-//        menuInflater.inflate(R.menu.certificate_menu, menu)
-//    }
-
 
     private fun loadUserProfile() {
         if (user.avatarUrl != "") {
@@ -183,18 +205,12 @@ class ProfileActivity : AppCompatActivity() {
 
     }
 
-
-
-
-
-
     private fun importCSVFile() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), READ_EXTERNAL_STORAGE_REQUEST)
         } else {
             openFilePicker()
         }
-
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -245,6 +261,64 @@ class ProfileActivity : AppCompatActivity() {
         } catch (e: IOException) {
             e.printStackTrace()
             Toast.makeText(this, "Import file error", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
+    private fun askFileName() {
+        val v = this.layoutInflater.inflate(R.layout.ask_filename_dialog, null)
+        val fileName = v.findViewById<EditText>(R.id.edt_fileName)
+        AlertDialog.Builder(this).setView(v)
+            .setPositiveButton("OK"){
+                    dialog,_->
+                exportFile(fileName.text.toString())
+                dialog.dismiss()
+            }
+            .setNegativeButton("CANCEL"){
+                    dialog,_->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+
+    private fun <T> csvOf (
+        headers: List<String>,
+        data: List<T>,
+        itemBuilder: (T) -> List<String>
+    ) = buildString {
+        append(headers.joinToString(",") { "$it" })
+        append("\n")
+        data.forEach { item ->
+            append(itemBuilder(item).joinToString(",") { "$it" })
+            append("\n")
+        }
+    }
+
+    private fun exportFile(fileName:String) {
+        if (fileName.isEmpty()) {
+            Toast.makeText(this, "File name must not be empty", Toast.LENGTH_SHORT).show()
+        }else{
+            val csvContent = csvOf(
+                listOf("name", "content"),
+                certiList
+            ) {
+                listOf(it.certiName, it.certiContent)
+            }
+
+            val fileName = "$fileName.csv"
+            val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val file = File(downloadsDirectory, fileName)
+
+            try {
+                file.writeText(csvContent)
+                Toast.makeText(this, "CSV file exported successfully", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Toast.makeText(this, "Error exporting CSV file", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

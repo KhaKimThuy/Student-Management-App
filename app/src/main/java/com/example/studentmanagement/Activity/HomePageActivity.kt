@@ -133,8 +133,8 @@ class HomePageActivity : AppCompatActivity() {
             }
 
             inputStream?.close() // Close the inputStream when done
-
             val intent = Intent(this, AddMultiUserActivity::class.java)
+            intent.putExtra("target", "import")
             intent.putParcelableArrayListExtra("userList", userList)
             startActivity(intent)
 
