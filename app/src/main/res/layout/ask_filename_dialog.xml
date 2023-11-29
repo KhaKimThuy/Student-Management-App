@@ -8,9 +8,11 @@
 
     <EditText
         android:id="@+id/edt_fileName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="380dp"
+        android:layout_height="60dp"
         android:ems="10"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/custom_form_input_login"
         android:hint="File name (required)"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"

@@ -8,10 +8,12 @@
 
     <EditText
         android:id="@+id/edt_certiName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="380dp"
+        android:layout_height="60dp"
+        android:background="@drawable/custom_form_input_login"
         android:ems="10"
         android:hint="Certificate name"
+        android:paddingHorizontal="20dp"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,9 +21,11 @@
 
     <EditText
         android:id="@+id/edt_certiDesc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="380dp"
+        android:layout_height="60dp"
         android:layout_marginTop="24dp"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/custom_form_input_login"
         android:ems="10"
         android:hint="Certificate description (option)"
         android:inputType="text"
