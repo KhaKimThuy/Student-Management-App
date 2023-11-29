@@ -30,9 +30,14 @@
         <activity
             android:name=".Activity.UserManagementActivity"
             android:exported="false" />
+
         <activity
             android:name=".Activity.HomePageActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar">
+        </activity>
+
+
         <activity
             android:name=".Activity.AddNewUserActivity"
             android:exported="false" />

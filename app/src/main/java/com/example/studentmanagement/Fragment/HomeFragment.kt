@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (UserDTO.currentUser?.position ?: "Student" != "Student") {
+        if (UserDTO.currentUser!!.position != "Student") {
             binding.cardViewUserManagement.setOnClickListener(View.OnClickListener {
                 val intent = Intent(requireActivity(), UserManagementActivity::class.java)
                 requireActivity().startActivity(intent)

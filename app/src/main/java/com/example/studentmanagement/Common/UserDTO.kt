@@ -6,8 +6,8 @@ import java.util.Calendar
 
 class UserDTO{
     companion object {
-        var currentUser: User? = null
-        var userAvatar: Bitmap? = null
+        lateinit var currentUser: User
+        lateinit var userAvatar: Bitmap
         var lastLogin: String = Calendar.getInstance().time.toString()
     }
 }

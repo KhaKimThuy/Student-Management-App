@@ -103,7 +103,9 @@ class UserDAL : DBConnection(){
                                     Toast.makeText(activity.applicationContext, "Login successfully", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(activity.applicationContext, HomePageActivity::class.java)
                                     activity.startActivity(intent)
-                                }else{
+                                    activity.finish()
+
+                                } else {
                                     activity.binding.edtPassword.error = "Wrong password"
                                     activity.binding.edtPassword.requestFocus()
                                 }
