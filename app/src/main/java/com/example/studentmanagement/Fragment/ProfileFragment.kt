@@ -1,11 +1,9 @@
 package com.example.studentmanagement.Fragment
 
 import android.app.Activity
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,18 +12,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.studentmanagement.Adapter.CertificateListAdapter
 import com.example.studentmanagement.Common.UserDTO
+import com.example.studentmanagement.DB.CertificateDAL
 import com.example.studentmanagement.DB.UserDAL
+import com.example.studentmanagement.Domain.Certificate
 import com.example.studentmanagement.R
 import com.example.studentmanagement.databinding.FragmentProfileBinding
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.gms.tasks.Task
 import java.io.ByteArrayOutputStream
 
 
 class ProfileFragment : Fragment() {
     private lateinit var binding : FragmentProfileBinding
-    val startForProfileImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+    lateinit var certiList : ArrayList<Certificate>
+    lateinit var adapter : CertificateListAdapter
+    private val startForProfileImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         val resultCode = result.resultCode
         val data = result.data
 
@@ -58,6 +60,13 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadUserProfile()
+
+//        if (UserDTO.currentUser.position != "Student") {
+//            binding.constraintLayoutCerti?.visibility = View.GONE
+//        } else {
+//            certiList = ArrayList<Certificate>()
+//            CertificateDAL().GetListOfCerti(UserDTO.currentUser, context)
+//        }
         
         binding.imageViewCamera.setOnClickListener(View.OnClickListener {
 
@@ -71,18 +80,26 @@ class ProfileFragment : Fragment() {
         })
     }
 
-    fun loadUserProfile() {
+    private fun loadUserProfile() {
         if (UserDTO.currentUser?.avatarUrl ?: "" == "") {
             binding.imgAvatar.setImageResource(R.drawable.user)
         } else {
             binding.imgAvatar.setImageBitmap(UserDTO.userAvatar)
         }
-        binding.tvUsername2.text = UserDTO.currentUser?.name ?: "Error"
-        binding.tvPosition2.text = UserDTO.currentUser?.position ?: "Error"
-        binding.tvName.text = UserDTO.currentUser?.name ?: "Error"
-        binding.tvAge.text = UserDTO.currentUser?.age ?: "Error"
-        binding.tvPhone.text = UserDTO.currentUser?.phone ?: "Error"
-        binding.tvStatus.text = UserDTO.currentUser?.status ?: "Error"
+
+        binding.tvUsername2.text = UserDTO.currentUser.name
+        binding.tvPosition2.text = UserDTO.currentUser.name
+
+        binding.tvName.setText(UserDTO.currentUser.name)
+        binding.tvAge.setText(UserDTO.currentUser.age)
+        binding.tvPhone.setText(UserDTO.currentUser.phone)
+        binding.tvStatus.setText(UserDTO.currentUser.status)
+
+    }
+
+    fun loadUserCertificate() {
+//        adapter = CertificateListAdapter(certiList, this)
+        binding.recyclerViewCertificate?.adapter = adapter
     }
 
     private fun uploadAvatar() {

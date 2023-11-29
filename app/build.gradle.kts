@@ -56,6 +56,9 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation ("com.google.firebase:firebase-storage:20.0.0")
+    implementation("com.google.firebase:firebase-auth")
+
+
     implementation("androidx.annotation:annotation:1.6.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
@@ -63,11 +66,13 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.71828")
     // Circle image
     implementation("de.hdodenhof:circleimageview:3.1.0")
-
+    implementation("androidx.core:core-splashscreen:1.0.0")
 
     implementation("com.github.dhaval2404:imagepicker:2.1")
     implementation("androidx.activity:activity-ktx:1.2.3")
     implementation("androidx.fragment:fragment-ktx:1.3.3")
+
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.19")
 
 
     testImplementation("junit:junit:4.13.2")

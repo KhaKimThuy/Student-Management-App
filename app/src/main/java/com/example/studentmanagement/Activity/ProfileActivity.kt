@@ -39,7 +39,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 
 class ProfileActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityProfileBinding
+    lateinit var binding : ActivityProfileBinding
     lateinit var user : User
     lateinit var adapter: CertificateListAdapter
     private var userPosition : Int = -1
@@ -65,6 +65,7 @@ class ProfileActivity : AppCompatActivity() {
         userPosition = intent.getIntExtra("position", -1)
 
         loadUserProfile()
+
         certiList = ArrayList<Certificate>()
         CertificateDAL().GetListOfCerti(user, this)
 
@@ -75,6 +76,29 @@ class ProfileActivity : AppCompatActivity() {
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        if (UserDTO.currentUser==null) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            // Only admin can see user login
+            if (UserDTO.currentUser?.position == "Admin") {
+                binding.textViewDesc?.visibility = View.GONE
+                binding.imageViewHistory?.visibility = View.GONE
+                binding.tvLoginHistory?.visibility = View.GONE
+            }
+        }
+
+
+
+
+        if (user.position != "Student") {
+            binding.constraintLayoutCerti?.visibility = View.GONE
+        }
+
+
+//        if (user.position != "Admin") {
 
         binding.btnUpdate.setOnClickListener(View.OnClickListener {
             // Certification
@@ -89,12 +113,17 @@ class ProfileActivity : AppCompatActivity() {
             if (changeAvatar) {
                 uploadAvatar()
             }
-            UserDAL().UpdateUserProfile(user, this)
-            val returnIntent = Intent()
-            returnIntent.putExtra("position", userPosition)
-            returnIntent.putExtra("user", user)
-            setResult(Activity.RESULT_OK, returnIntent)
-            finish()
+
+            if (userPosition == -1) { // UserDTO
+                Toast.makeText(this, "Update your information successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                UserDAL().UpdateUserProfile(user, this)
+                val returnIntent = Intent()
+                returnIntent.putExtra("position", userPosition)
+                returnIntent.putExtra("user", user)
+                setResult(Activity.RESULT_OK, returnIntent)
+                finish()
+            }
         })
 
         binding.imageViewCamera.setOnClickListener(View.OnClickListener {
@@ -118,10 +147,10 @@ class ProfileActivity : AppCompatActivity() {
         })
 
     }
-//    override fun onSupportNavigateUp(): Boolean {
-//        onBackPressed()
-//        return true
-//    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.user_profile_menu, menu)

@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -62,18 +63,18 @@ class HomePageActivity : AppCompatActivity() {
             }
             true
         }
-
-        if (UserDTO.currentUser?.position ?: "Student" != "Student") {
-            binding.imgAddNew.visibility = View.VISIBLE
-            binding.imgAddNew.setOnClickListener(View.OnClickListener {
-//                val intent = Intent(this, AddNewUserActivity::class.java)
-//                startActivity(intent)
-
-                showBottomDialog()
-
-            })
+        if (UserDTO.currentUser==null) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            if (UserDTO.currentUser!!.position != "Student") {
+                binding.imgAddNew.visibility = View.VISIBLE
+                binding.imgAddNew.setOnClickListener(View.OnClickListener {
+                    showBottomDialog()
+                })
+            }
         }
-
     }
 
     private fun replaceFragment(fragment: Fragment) {

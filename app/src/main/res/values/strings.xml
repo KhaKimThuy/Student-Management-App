@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">StudentManagement</string>
+    <string name="app_name">Student Management</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat.startActivity
 import com.example.studentmanagement.Activity.AddNewUserActivity
 import com.example.studentmanagement.Activity.HomePageActivity
 import com.example.studentmanagement.Activity.LoginActivity
+import com.example.studentmanagement.Activity.MainActivity
 import com.example.studentmanagement.Activity.ProfileActivity
 import com.example.studentmanagement.Activity.UserManagementActivity
 import com.example.studentmanagement.Common.UserDTO
@@ -78,10 +79,10 @@ class UserDAL : DBConnection(){
 
     }
 
-    fun LoginUser(phone : String, pass : String, activity: LoginActivity) {
+    fun LoginUser(phone : String?, pass : String?, activity: LoginActivity) {
             val query = GetUserRef().orderByChild("phone")
                 .equalTo(phone).limitToFirst(1)
-            query.addValueEventListener(object : ValueEventListener {
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.childrenCount < 1) {
                         activity.binding.edtPhone.error = "User is not exist"
@@ -91,6 +92,8 @@ class UserDAL : DBConnection(){
                             val user = snapshot.getValue(User::class.java)
                             if (user != null) {
                                 if (user.password == pass) {
+// Init current user
+                                    UserDTO.currentUser = User()
                                     UserDTO.currentUser = user
                                     UserDTO.lastLogin = user.lastLogin
 
@@ -99,6 +102,12 @@ class UserDAL : DBConnection(){
                                     if (user.avatarUrl != "") {
                                         UserDTO.currentUser?.let {PicassoToBitmap(it.avatarUrl) }
                                     }
+
+                                    val editor = activity.sharedpreferences.edit()
+                                    editor.putString(LoginActivity.PHONE_KEY, user.phone)
+                                    editor.putString(LoginActivity.PASSWORD_KEY, user.password)
+                                    editor.putBoolean("hasLoggedIn", true)
+                                    editor.apply()
 
                                     Toast.makeText(activity.applicationContext, "Login successfully", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(activity.applicationContext, HomePageActivity::class.java)
@@ -118,6 +127,36 @@ class UserDAL : DBConnection(){
                     // Handle any errors
                 }
             })
+    }
+
+    fun LoadUser(phone : String?, pass : String?, activity : MainActivity) {
+        val query = GetUserRef().orderByChild("phone")
+            .equalTo(phone).limitToFirst(1)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        val user = snapshot.getValue(User::class.java)
+                        if (user != null) {
+                            if (user.password == pass) {
+                                UserDTO.currentUser = User()
+                                UserDTO.currentUser = user
+                                UserDTO.lastLogin = user.lastLogin
+                                UpdateLastLogin(user)
+                                if (user.avatarUrl != "") {
+                                    UserDTO.currentUser?.let {PicassoToBitmap(it.avatarUrl) }
+                                }
+                                val intent = Intent(activity, HomePageActivity::class.java)
+                                activity.startActivity(intent)
+                                activity.finish()
+                            }
+                        }
+                }
+
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors
+            }
+        })
     }
 
     fun UpdateLastLogin(user : User) {

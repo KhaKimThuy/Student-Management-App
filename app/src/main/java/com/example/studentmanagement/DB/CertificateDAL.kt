@@ -1,18 +1,14 @@
 package com.example.studentmanagement.DB
 
-import android.content.Intent
+import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import com.example.studentmanagement.Activity.AddNewUserActivity
-import com.example.studentmanagement.Activity.HomePageActivity
+import android.view.View
 import com.example.studentmanagement.Activity.ProfileActivity
-import com.example.studentmanagement.Activity.UserManagementActivity
 import com.example.studentmanagement.Domain.Certificate
 import com.example.studentmanagement.Domain.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 
 class CertificateDAL : DBConnection() {
@@ -53,7 +49,7 @@ class CertificateDAL : DBConnection() {
         objRef.child("certiContent")?.setValue(certi.certiContent)
     }
 
-    fun GetListOfCerti(user : User, activity : ProfileActivity) {
+    fun GetListOfCerti(user: User, activity: ProfileActivity) {
         val query = GetCertificateRef().orderByChild("userPK").equalTo(user.pk)
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -65,7 +61,15 @@ class CertificateDAL : DBConnection() {
                             activity.certiList.add(certi)
                         }
                     }
-                    activity.loadUserCertificate()
+                    if (activity.certiList.size == 0) {
+                        if (activity.binding.textViewNoCerti?.visibility == View.VISIBLE) {
+                            activity.binding.textViewNoCerti?.visibility = View.GONE
+                        } else {
+                            activity.binding.textViewNoCerti?.visibility = View.VISIBLE
+                        }
+                    } else {
+                        activity.loadUserCertificate()
+                    }
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {

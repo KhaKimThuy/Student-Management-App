@@ -74,9 +74,10 @@
                 android:padding="20dp"
                 android:text="Name" />
 
-            <TextView
+            <EditText
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
+                android:background="@color/white"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:padding="20dp"
@@ -96,9 +97,10 @@
                 android:padding="20dp"
                 android:text="Age" />
 
-            <TextView
+            <EditText
                 android:id="@+id/tvAge"
                 android:layout_width="wrap_content"
+                android:background="@color/white"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:padding="20dp"
@@ -118,9 +120,10 @@
                 android:padding="20dp"
                 android:text="Phone Number" />
 
-            <TextView
+            <EditText
                 android:id="@+id/tvPhone"
                 android:layout_width="wrap_content"
+                android:background="@color/white"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:padding="20dp"
@@ -140,9 +143,10 @@
                 android:padding="20dp"
                 android:text="Status" />
 
-            <TextView
+            <EditText
                 android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
+                android:background="@color/white"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:padding="20dp"
