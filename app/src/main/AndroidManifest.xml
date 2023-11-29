@@ -43,7 +43,8 @@
             android:exported="false" />
         <activity
             android:name=".Activity.LoginActivity"
-            android:exported="false" />
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
+            android:exported="false"/>
         <activity
             android:name=".Activity.MainActivity"
             android:exported="true"

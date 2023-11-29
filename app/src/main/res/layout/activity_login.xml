@@ -26,8 +26,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.19999999"
-            app:srcCompat="@drawable/mascot" />
+            app:layout_constraintVertical_bias="0.2"
+            app:srcCompat="@drawable/logo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -110,17 +110,6 @@
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="@+id/btnLogin"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
-        <TextView
-            android:id="@+id/tv_createNewAcc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create new account"
-            android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 

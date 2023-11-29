@@ -27,10 +27,6 @@ class LoginActivity : AppCompatActivity() {
 
         // Save local data
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
-        binding.tvCreateNewAcc.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this, AddNewUserActivity::class.java)
-            startActivity(intent)
-        })
         binding.btnLogin.setOnClickListener(View.OnClickListener {
             login(binding.edtPhone.text.toString(), binding.edtPassword.text.toString())
         })
