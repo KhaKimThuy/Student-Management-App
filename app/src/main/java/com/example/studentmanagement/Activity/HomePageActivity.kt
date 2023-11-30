@@ -57,7 +57,7 @@ class HomePageActivity : AppCompatActivity() {
         fragmentTransaction.commitNow()
 
 
-        binding.bottomNavigationView.background = null
+//        binding.bottomNavigationView.background = null
 //        binding.bottomNavigationView.setOnItemSelectedListener { item ->
 //            when (item.itemId) {
 //                R.id.home -> replaceFragment(HomeFragment())
@@ -65,20 +65,20 @@ class HomePageActivity : AppCompatActivity() {
 //            }
 //            true
 //        }
-        try {
-            if (UserDTO.currentUser!!.position != "Student") {
-                binding.imgAddNew.visibility = View.VISIBLE
-                binding.imgAddNew.setOnClickListener(View.OnClickListener {
-                    showBottomDialog()
-                })
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Toast.makeText(this, "Error system", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+//        try {
+//            if (UserDTO.currentUser!!.position != "Student") {
+//                binding.imgAddNew.visibility = View.VISIBLE
+//                binding.imgAddNew.setOnClickListener(View.OnClickListener {
+//                    showBottomDialog()
+//                })
+//            }
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//            Toast.makeText(this, "Error system", Toast.LENGTH_SHORT).show()
+//            val intent = Intent(this, LoginActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
     }
 //
 //    private fun replaceFragment(fragment: Fragment) {
