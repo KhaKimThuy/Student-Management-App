@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.studentmanagement.Activity.ProfileActivity
 import com.example.studentmanagement.DB.CertificateDAL
 import com.example.studentmanagement.Domain.Certificate
-import com.example.studentmanagement.Fragment.ProfileFragment
 import com.example.studentmanagement.R
 
 class CertificateListAdapter(

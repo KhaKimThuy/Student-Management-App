@@ -51,6 +51,7 @@ class UserDAL : DBConnection(){
                     if (activity != null) {
                         Toast.makeText(activity.applicationContext, "Create user successfully", Toast.LENGTH_SHORT).show()
                     }
+                    activity?.finish()
                 }
             }
 
@@ -67,14 +68,13 @@ class UserDAL : DBConnection(){
         return GetUserRef().child(user.pk)
     }
 
-    fun UpdateUserProfile(user : User, activity : ProfileActivity) {
+    fun UpdateUserProfile(user : User) {
         var objRef = UserObjectRef(user)
         objRef.child("age")?.setValue(user.age)
         objRef.child("name")?.setValue(user.name)
         objRef.child("password")?.setValue(user.password)
         objRef.child("position")?.setValue(user.position)
         objRef.child("phone")?.setValue(user.phone)
-
     }
 
     fun LoginUser(phone : String?, pass : String?, activity: LoginActivity) {
@@ -223,11 +223,10 @@ class UserDAL : DBConnection(){
             uploadTask.addOnSuccessListener { taskSnapshot ->
                 val downloadUrlTask: Task<Uri> = taskSnapshot.storage.downloadUrl
                 downloadUrlTask.addOnSuccessListener { uri ->
-//                    val root = user.pk?.let { it1 -> GetUserRef().child(it1) }
                     val root = UserObjectRef(user)
                     val newAvatarUrl = uri.toString()
+//                    PicassoToBitmap(newAvatarUrl)
                     root?.child("avatarUrl")?.setValue(newAvatarUrl)
-
                 }
             }?.addOnFailureListener {
 
@@ -248,10 +247,9 @@ class UserDAL : DBConnection(){
                     activity.userList.clear()
                     for (snapshot in dataSnapshot.children) {
                         if (snapshot != null) {
-                            Log.d("TAG","Get list of user")
                             val user = snapshot.getValue(User::class.java)
                             if (user != null) {
-                                if (user.position != "Admin") {
+                                if (user.position == "Student") {
                                     activity.userList.add(user)
                                 }
                             }

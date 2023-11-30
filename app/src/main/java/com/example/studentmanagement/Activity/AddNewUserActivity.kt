@@ -16,7 +16,9 @@ class AddNewUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddNewUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        supportActionBar?.title = "Add new user";
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setDisplayShowHomeEnabled(true);
         binding.btnAddNew.setOnClickListener(View.OnClickListener {
 
             val selectedRadioButtonId = binding.radioPos.checkedRadioButtonId
@@ -45,6 +47,10 @@ class AddNewUserActivity : AppCompatActivity() {
 
         })
 
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun createNewUser(phone: String, name : String, age : String, position : String, status : String) {

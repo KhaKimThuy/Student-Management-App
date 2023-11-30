@@ -44,7 +44,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var binding : ActivityProfileBinding
     lateinit var user : User
     lateinit var adapter: CertificateListAdapter
-    private var userPosition : Int = -1
+    var userPosition : Int = -1
     private var changeAvatar : Boolean = false
     lateinit var certiList : ArrayList<Certificate>
     private val READ_EXTERNAL_STORAGE_REQUEST = 110
@@ -69,12 +69,7 @@ class ProfileActivity : AppCompatActivity() {
         loadUserProfile()
         certiList = ArrayList<Certificate>()
         CertificateDAL().GetListOfCerti(user, this)
-//        certiList = ArrayList<Certificate>()
-//        adapter = CertificateListAdapter(certiList, this)
-//        binding.recyclerViewCertificate?.adapter = adapter
 
-
-        Log.d("TAG", "Is student")
         binding.recyclerViewCertificate?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewCertificate?.addItemDecoration(
             DividerItemDecoration(
@@ -82,7 +77,6 @@ class ProfileActivity : AppCompatActivity() {
                 DividerItemDecoration.VERTICAL
             )
         )
-
 
         // Only admin can see user login
         if (UserDTO.currentUser.position != "Admin") {
@@ -111,34 +105,42 @@ class ProfileActivity : AppCompatActivity() {
         }
 
 
-//        if (user.position != "Admin") {
-
         binding.btnUpdate.setOnClickListener(View.OnClickListener {
+
             // Certification
-            for (certi in importedCerti) {
-                certi.userPK = user.pk
-                CertificateDAL().CreateNewCerti(certi)
+            if (importedCerti.size > 0) {
+                for (certi in importedCerti) {
+                    certi.userPK = user.pk
+                    CertificateDAL().CreateNewCerti(certi)
+                }
+                importedCerti.clear()
             }
 
-            importedCerti.clear()
-
-            // User information
-            getUpdateInformation()
             if (changeAvatar) {
                 uploadAvatar()
             }
 
+            // User information
+            getUpdateInformation()
+
             if (userPosition == -1) { // UserDTO
+                UserDAL().UpdateUserProfile(user)
+                UserDTO.currentUser = user
+
+                val returnIntent = Intent()
+                returnIntent.putExtra("user", user)
+                setResult(Activity.RESULT_OK, returnIntent)
                 Toast.makeText(this, "Update your information successfully", Toast.LENGTH_SHORT).show()
             } else {
-                UserDAL().UpdateUserProfile(user, this)
+                UserDAL().UpdateUserProfile(user)
                 val returnIntent = Intent()
                 returnIntent.putExtra("position", userPosition)
                 returnIntent.putExtra("user", user)
                 setResult(Activity.RESULT_OK, returnIntent)
+
                 Toast.makeText(this, "Update user information successfully", Toast.LENGTH_SHORT)
-//                finish()
             }
+            finish()
         })
 
         binding.imageViewCamera.setOnClickListener(View.OnClickListener {
@@ -269,6 +271,10 @@ class ProfileActivity : AppCompatActivity() {
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
+
+        if (userPosition == -1) {
+            UserDTO.userAvatar = bitmap
+        }
 
         UserDAL().UpdateAvatar(byteArray, user)
     }
