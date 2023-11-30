@@ -242,7 +242,8 @@ class UserManagementActivity : AppCompatActivity() {
         })
 
         addUser.setOnClickListener(View.OnClickListener {
-            importCSVFile()
+            val intent = Intent(this, AddNewUserActivity::class.java)
+            startActivity(intent)
             dialog.dismiss()
         })
 
