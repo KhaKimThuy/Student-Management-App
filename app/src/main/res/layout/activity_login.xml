@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4DDADEE9">
+    android:background="@color/fourth_color">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -81,7 +81,8 @@
             android:drawablePadding="10dp"
             android:ems="10"
             android:hint="Password"
-            android:inputType="text"
+            android:ellipsize="start"
+            android:inputType="textPassword"
             android:paddingHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,19 +100,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Forgot password?"
-            android:textAllCaps="false"
-            android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="@+id/btnLogin"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

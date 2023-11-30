@@ -7,8 +7,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/fourth_color">
+        android:layout_height="match_parent">
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar"/>
@@ -38,16 +37,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
-                android:layout_marginTop="-200dp"
                 android:layout_weight="1"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
                     android:paddingVertical="32dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
@@ -55,8 +56,8 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/user"
                         android:elevation="2dp"
+                        android:src="@drawable/user"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -69,6 +70,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentEnd="true"
                         android:layout_marginTop="8dp"
+                        android:fontFamily="@font/amaranth"
                         android:text="TextView"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -81,6 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:fontFamily="@font/amaranth"
                         android:text="TextView"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="@+id/imgUserAvatar"
@@ -124,6 +127,7 @@
                         android:layout_below="@id/bus"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
+                        android:fontFamily="@font/amaranth"
                         android:text="Management"
                         android:textSize="24sp"
                         app:fontFamily="@font/amaranth" />
@@ -158,6 +162,7 @@
                         android:layout_below="@id/imageView3"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
+                        android:fontFamily="@font/amaranth"
                         android:text="Profile"
                         android:textSize="24sp"
                         app:fontFamily="@font/amaranth" />
@@ -176,11 +181,11 @@
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="0dp"
-            android:layout_height="175dp"
+            android:layout_height="100dp"
+            android:layout_marginHorizontal="16dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            android:layout_marginHorizontal="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
@@ -193,9 +198,10 @@
                 app:cardCornerRadius="5dp"
                 app:cardElevation="5dp">
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/fourth_color">
 
                     <TextView
                         android:id="@+id/textView6"
@@ -203,53 +209,28 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/bus1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/amaranth"
                         android:text="Logout"
                         android:textSize="24sp"
-                        app:fontFamily="@font/amaranth" />
+                        android:layout_marginLeft="24dp"
+                        app:fontFamily="@font/amaranth"
+                        app:layout_constraintBottom_toBottomOf="@+id/bus1"
+                        app:layout_constraintStart_toEndOf="@+id/bus1"
+                        app:layout_constraintTop_toTopOf="@+id/bus1" />
 
                     <ImageView
                         android:id="@+id/bus1"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="24dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/logout" />
-                </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/train"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="10dp"
-                        android:text="Train"
-                        android:textSize="24sp"
-                        app:fontFamily="@font/amaranth" />
-
-                    <ImageView
-                        android:id="@+id/train"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
-                        app:srcCompat="@drawable/management" />
-                </RelativeLayout>
-            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
 

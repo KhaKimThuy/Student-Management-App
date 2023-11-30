@@ -243,7 +243,7 @@ class UserManagementActivity : AppCompatActivity() {
 
         addUser.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, AddNewUserActivity::class.java)
-            startActivity(intent)
+            startActivity(intent)   
             dialog.dismiss()
         })
 

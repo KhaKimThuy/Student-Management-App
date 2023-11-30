@@ -22,9 +22,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Import file csv"
             android:layout_marginLeft="30dp"
-            android:textSize="16sp"/>
+            android:fontFamily="@font/amaranth"
+            android:text="Import file csv"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -48,9 +49,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add one user"
             android:layout_marginLeft="30dp"
-            android:textSize="16sp"/>
+            android:fontFamily="@font/amaranth"
+            android:text="Add one user"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

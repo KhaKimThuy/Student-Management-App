@@ -6,28 +6,6 @@
     android:layout_height="match_parent"
     android:background="#cddff5">
 
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="ADD NEW USER"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imgBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_arrow_back_24" />
-
     <RadioGroup
         android:id="@+id/radioPos"
         android:layout_width="380dp"
@@ -42,6 +20,7 @@
             android:id="@+id/rbtnManager"
             android:layout_width="190dp"
             android:layout_height="match_parent"
+            android:fontFamily="@font/amaranth"
             android:text="Manager User"
             android:textSize="16sp" />
 
@@ -49,6 +28,7 @@
             android:id="@+id/rbtnStudent"
             android:layout_width="190dp"
             android:layout_height="match_parent"
+            android:fontFamily="@font/amaranth"
             android:text="Student User"
             android:textSize="16sp" />
     </RadioGroup>
@@ -58,17 +38,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:fontFamily="@font/amaranth"
         android:text="Position"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/radioPos"
-        app:layout_constraintTop_toBottomOf="@+id/imgBack" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/amaranth"
         android:text="Name"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -119,6 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/amaranth"
         android:text="Age"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -130,6 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/amaranth"
         android:text="Number Phone"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -141,6 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/amaranth"
         android:text="Status"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -161,6 +146,7 @@
             android:id="@+id/rbtnNormal"
             android:layout_width="190dp"
             android:layout_height="60dp"
+            android:fontFamily="@font/amaranth"
             android:text="Normal"
             android:textSize="16sp" />
 
@@ -168,6 +154,7 @@
             android:id="@+id/rbtnLocked"
             android:layout_width="190dp"
             android:layout_height="60dp"
+            android:fontFamily="@font/amaranth"
             android:text="Locked"
             android:textSize="16sp" />
     </RadioGroup>
@@ -178,6 +165,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/custom_btn_login"
+        android:fontFamily="@font/amaranth"
         android:text="Add New User"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#FFFFFF"
