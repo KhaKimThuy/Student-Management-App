@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -38,6 +39,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 
+
 class ProfileActivity : AppCompatActivity() {
     lateinit var binding : ActivityProfileBinding
     lateinit var user : User
@@ -65,10 +67,14 @@ class ProfileActivity : AppCompatActivity() {
         userPosition = intent.getIntExtra("position", -1)
 
         loadUserProfile()
-
         certiList = ArrayList<Certificate>()
         CertificateDAL().GetListOfCerti(user, this)
+//        certiList = ArrayList<Certificate>()
+//        adapter = CertificateListAdapter(certiList, this)
+//        binding.recyclerViewCertificate?.adapter = adapter
 
+
+        Log.d("TAG", "Is student")
         binding.recyclerViewCertificate?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewCertificate?.addItemDecoration(
             DividerItemDecoration(
@@ -77,23 +83,30 @@ class ProfileActivity : AppCompatActivity() {
             )
         )
 
-        if (UserDTO.currentUser==null) {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
-            // Only admin can see user login
-            if (UserDTO.currentUser?.position == "Admin") {
-                binding.textViewDesc?.visibility = View.GONE
-                binding.imageViewHistory?.visibility = View.GONE
-                binding.tvLoginHistory?.visibility = View.GONE
-            }
+
+        // Only admin can see user login
+        if (UserDTO.currentUser.position != "Admin") {
+            binding.view?.visibility = View.GONE
+            binding.textViewDesc2?.visibility = View.GONE
+            binding.imageView8?.visibility = View.GONE
+            binding.tvLoginHistory?.visibility = View.GONE
         }
 
+        if (user.position == "Student") {
+            if (UserDTO.currentUser.position == "Student") {
 
+                binding.tvName.isEnabled = false
+                binding.tvAge.isEnabled = false
+                binding.tvPhone.isEnabled = false
+                binding.tvStatus.isEnabled = false
 
+                binding.exportCerti.visibility = View.GONE
+                binding.importCerti.visibility = View.GONE
+                binding.imageViewAddCertificate.visibility = View.GONE
 
-        if (user.position != "Student") {
+                binding.btnUpdate.visibility = View.GONE
+            }
+        } else {
             binding.constraintLayoutCerti?.visibility = View.GONE
         }
 
@@ -106,6 +119,7 @@ class ProfileActivity : AppCompatActivity() {
                 certi.userPK = user.pk
                 CertificateDAL().CreateNewCerti(certi)
             }
+
             importedCerti.clear()
 
             // User information
@@ -122,7 +136,8 @@ class ProfileActivity : AppCompatActivity() {
                 returnIntent.putExtra("position", userPosition)
                 returnIntent.putExtra("user", user)
                 setResult(Activity.RESULT_OK, returnIntent)
-                finish()
+                Toast.makeText(this, "Update user information successfully", Toast.LENGTH_SHORT)
+//                finish()
             }
         })
 
@@ -195,10 +210,12 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun loadUserProfile() {
-        if (user.avatarUrl != "") {
-            Picasso.get().load(user.avatarUrl).into(binding.imgAvatar)
+        if (userPosition == -1) {
+            binding.imgAvatar!!.setImageBitmap(UserDTO.userAvatar)
         } else {
-            binding.imgAvatar.setImageResource(R.drawable.user)
+            if (user.avatarUrl != "") {
+                Picasso.get().load(user.avatarUrl).into(binding.imgAvatar)
+            }
         }
 
         binding.tvUsername2.text = user.name
@@ -211,7 +228,10 @@ class ProfileActivity : AppCompatActivity() {
         if (user.lastLogin.isEmpty()) {
             binding.tvLoginHistory?.text = "User have not logged once"
         }else {
-            binding.tvLoginHistory?.text = user.lastLogin
+
+            val input = user.lastLogin.split(" ")
+            val timeLogin = input[0] + " " + input[1] + " " + input[2] + " " + input[5] + " | " + input[3]
+            binding.tvLoginHistory?.text = timeLogin
         }
     }
 
@@ -232,12 +252,11 @@ class ProfileActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode != PICK_CSV_FILE_REQUEST) {
             val uri: Uri = data?.data!!
-            binding.imgAvatar.setImageURI(uri)
+            binding.imgAvatar!!.setImageURI(uri)
             changeAvatar = true
 
         } else {
-
-            if (requestCode == PICK_CSV_FILE_REQUEST && data != null) {
+            if (data != null) {
                 fileuri = data.data
                 fileuri?.let { loadCSVFile(it) }
             }
@@ -245,7 +264,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun uploadAvatar() {
-        val drawable = binding.imgAvatar.drawable as BitmapDrawable
+        val drawable = binding.imgAvatar!!.drawable as BitmapDrawable
         val bitmap = drawable.bitmap
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
@@ -292,12 +311,14 @@ class ProfileActivity : AppCompatActivity() {
 
     private var fileuri: Uri? = null
 
-
     private fun loadCSVFile(uri: Uri) {
         try {
             val inputStream: InputStream? = contentResolver.openInputStream(uri)
             val reader = BufferedReader(InputStreamReader(inputStream))
             var line : String?
+
+            CertificateDAL().GetListOfCerti(user, this)
+
             while (reader.readLine().also { line = it } != null) {
                 val row : List<String> = line!!.split(",")
                 try {
@@ -377,4 +398,5 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
     }
+
 }

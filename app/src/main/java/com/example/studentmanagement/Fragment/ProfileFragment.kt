@@ -34,7 +34,7 @@ class ProfileFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK) {
             //Image Uri will not be null for RESULT_OK
             val fileUri = data?.data!!
-            binding.imgAvatar.setImageURI(fileUri)
+            binding.imgUserAvatar.setImageURI(fileUri)
 
             val inputStream = fileUri?.let { requireActivity().contentResolver.openInputStream(it) }
             UserDTO.userAvatar =  BitmapFactory.decodeStream(inputStream)
@@ -82,9 +82,9 @@ class ProfileFragment : Fragment() {
 
     private fun loadUserProfile() {
         if (UserDTO.currentUser?.avatarUrl ?: "" == "") {
-            binding.imgAvatar.setImageResource(R.drawable.user)
+            binding.imgUserAvatar.setImageResource(R.drawable.user)
         } else {
-            binding.imgAvatar.setImageBitmap(UserDTO.userAvatar)
+            binding.imgUserAvatar.setImageBitmap(UserDTO.userAvatar)
         }
 
         binding.tvUsername2.text = UserDTO.currentUser.name
@@ -103,7 +103,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun uploadAvatar() {
-        val drawable = binding.imgAvatar.drawable as BitmapDrawable
+        val drawable = binding.imgUserAvatar.drawable as BitmapDrawable
         val bitmap = drawable.bitmap
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)

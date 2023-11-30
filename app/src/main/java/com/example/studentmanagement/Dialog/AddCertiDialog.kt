@@ -34,8 +34,6 @@ class AddCertiDialog(
             .setNegativeButton("CANCEL") { _, _ ->
             }
             .setPositiveButton("ADD") { dialog, _ ->
-//                    if (addCerti()) {
-//                    }
 
                 if (certiName.text.toString().isEmpty()) {
                     certiName.error = "Certificate name is required"

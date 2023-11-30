@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <CheckBox
+        android:id="@+id/cbAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Age"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/cbTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The last time login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbName" />
+
+    <CheckBox
+        android:id="@+id/cbName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbAge" />
+
+    <Switch
+        android:id="@+id/swAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/sort_descending"
+        android:drawablePadding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cbAge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cbAge" />
+
+    <Switch
+        android:id="@+id/swName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/sort_descending"
+        android:drawablePadding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cbName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cbName" />
+
+    <Switch
+        android:id="@+id/swTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/sort_descending"
+        android:drawablePadding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cbTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cbTime" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

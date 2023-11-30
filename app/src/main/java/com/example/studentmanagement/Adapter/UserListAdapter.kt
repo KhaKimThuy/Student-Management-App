@@ -42,7 +42,7 @@ class UserListAdapter(
         } else {
             Picasso.get().load(userList[position].avatarUrl).into(holder.ava)
         }
-        holder.name.text = userList[position].name
+        holder.name.text = userList[position].name + " " + userList[position].age
         holder.pos.text = userList[position].position
 
         holder.itemView.setOnClickListener(View.OnClickListener {

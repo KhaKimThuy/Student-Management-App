@@ -48,6 +48,8 @@ class HomePageActivity : AppCompatActivity() {
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.title = "Dashboard";
+
 
         fragmentManager = supportFragmentManager
         fragmentTransaction = supportFragmentManager.beginTransaction()
@@ -56,35 +58,37 @@ class HomePageActivity : AppCompatActivity() {
 
 
         binding.bottomNavigationView.background = null
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.home -> replaceFragment(HomeFragment())
-                R.id.profile -> replaceFragment(ProfileFragment())
-            }
-            true
-        }
-        if (UserDTO.currentUser==null) {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
+//        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+//            when (item.itemId) {
+//                R.id.home -> replaceFragment(HomeFragment())
+////                R.id.profile -> replaceFragment(ProfileFragment())
+//            }
+//            true
+//        }
+        try {
             if (UserDTO.currentUser!!.position != "Student") {
                 binding.imgAddNew.visibility = View.VISIBLE
                 binding.imgAddNew.setOnClickListener(View.OnClickListener {
                     showBottomDialog()
                 })
             }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error system", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
-
-    private fun replaceFragment(fragment: Fragment) {
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        if (fragment != null) {
-            fragmentTransaction.replace(R.id.frameLayout, fragment)
-        }
-        fragmentTransaction.commit()
-    }
+//
+//    private fun replaceFragment(fragment: Fragment) {
+//        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+//        if (fragment != null) {
+//            fragmentTransaction.replace(R.id.frameLayout, fragment)
+//        }
+//        fragmentTransaction.commit()
+//    }
 
     private fun showBottomDialog() {
         val dialog = Dialog(this)

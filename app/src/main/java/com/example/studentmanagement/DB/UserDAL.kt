@@ -1,14 +1,11 @@
 package com.example.studentmanagement.DB
 
 import android.content.Intent
-import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import com.example.studentmanagement.Activity.AddNewUserActivity
 import com.example.studentmanagement.Activity.HomePageActivity
 import com.example.studentmanagement.Activity.LoginActivity
@@ -17,18 +14,19 @@ import com.example.studentmanagement.Activity.ProfileActivity
 import com.example.studentmanagement.Activity.UserManagementActivity
 import com.example.studentmanagement.Common.UserDTO
 import com.example.studentmanagement.Domain.User
-import com.example.studentmanagement.R
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
+
+
+
 
 class UserDAL : DBConnection(){
     fun GetUserRef(): DatabaseReference {
@@ -100,7 +98,7 @@ class UserDAL : DBConnection(){
                                     UpdateLastLogin(user)
 
                                     if (user.avatarUrl != "") {
-                                        UserDTO.currentUser?.let {PicassoToBitmap(it.avatarUrl) }
+                                        PicassoToBitmap(user.avatarUrl)
                                     }
 
                                     val editor = activity.sharedpreferences.edit()
@@ -143,7 +141,7 @@ class UserDAL : DBConnection(){
                                 UserDTO.lastLogin = user.lastLogin
                                 UpdateLastLogin(user)
                                 if (user.avatarUrl != "") {
-                                    UserDTO.currentUser?.let {PicassoToBitmap(it.avatarUrl) }
+                                    PicassoToBitmap(user.avatarUrl)
                                 }
                                 val intent = Intent(activity, HomePageActivity::class.java)
                                 activity.startActivity(intent)
@@ -158,6 +156,62 @@ class UserDAL : DBConnection(){
             }
         })
     }
+
+    fun SortUserList(criteriaList: ArrayList<String>, orderList: ArrayList<Boolean>, userList : ArrayList<User>) : ArrayList<User>{
+        var sortedList = ArrayList<User>()
+        sortedList.addAll(userList)
+        for (idx in 0..< criteriaList.size) {
+            // Sort by age
+            if (criteriaList[idx] == "Age") {
+                sortedList = if (orderList[idx]){
+                    ArrayList<User>(sortedList.sortedByDescending{it.age.toInt()})
+                } else {
+                    ArrayList<User>(sortedList.sortedBy{it.age.toInt()})
+                }
+            }
+
+            // Sort by name
+            else if (criteriaList[idx] == "Name") {
+                sortedList = if (orderList[idx]) {
+                    ArrayList<User>(sortedList.sortedByDescending{it.name})
+                } else {
+                    ArrayList<User>(sortedList.sortedBy{it.name})
+                }
+            }
+
+            // Sort by login time
+            else if (criteriaList[idx] == "The last time login") {
+                sortedList = if (orderList[idx]) {
+                    ArrayList<User>(sortedList.sortedByDescending{
+                        val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
+                        sdf.parse(it.lastLogin).time // all done
+//                        sdf.parse(it.lastLogin).time
+                    })
+                } else {
+                    ArrayList<User>(sortedList.sortedBy{
+                        val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
+                        sdf.parse(it.lastLogin).time // all done
+//                        sdf.parse(it.lastLogin).time
+                    })
+                }
+            }
+        }
+
+        return sortedList
+    }
+
+//    fun SortUserByAge(userList: ArrayList<User>) : ArrayList<User>{
+//        return ArrayList<User>(userList.sortedBy{it.age.toInt()})
+//    }
+//    fun SortUserByName(userList: ArrayList<User>) : ArrayList<User>{
+//        return ArrayList<User>(userList.sortedBy{it.name})
+//    }
+//    fun SortUserByTimeLogin (userList: ArrayList<User>) : ArrayList<User>{
+//        return ArrayList<User>(userList.sortedBy {
+//            val sdf = SimpleDateFormat("dd/MM/yyyy '@'hh:mm a")
+//            sdf.parse(it.lastLogin).time
+//        })
+//    }
 
     fun UpdateLastLogin(user : User) {
         UserObjectRef(user).child("lastLogin").setValue(Calendar.getInstance().time.toString())
@@ -181,14 +235,14 @@ class UserDAL : DBConnection(){
         }
     }
 
-    fun GetListOfUser(position : String, activity : UserManagementActivity) {
-        val query : Query
-        if (position == "") {
-            query = GetUserRef().orderByChild("name")
-        } else {
-            query = GetUserRef().orderByChild("position").equalTo(position)
-        }
-        query.addValueEventListener(object : ValueEventListener {
+    fun GetListOfUser(activity : UserManagementActivity) {
+//        val query : Query
+//        if (position == "") {
+//            query = GetUserRef().orderByChild("name")
+//        } else {
+//            query = GetUserRef().orderByChild("position").equalTo(position)
+//        }
+        GetUserRef().addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 //                if (!activity.updateUser) {
                     activity.userList.clear()
@@ -228,6 +282,7 @@ class UserDAL : DBConnection(){
         val target = object : Target {
             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                 if (bitmap != null) {
+                    Log.d("TAG", "HOme fragment --- ")
                     UserDTO.userAvatar = bitmap
                 }
             }

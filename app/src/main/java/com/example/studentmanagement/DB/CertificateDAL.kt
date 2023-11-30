@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import com.example.studentmanagement.Activity.ProfileActivity
+import com.example.studentmanagement.Adapter.CertificateListAdapter
 import com.example.studentmanagement.Domain.Certificate
 import com.example.studentmanagement.Domain.User
 import com.google.firebase.database.DataSnapshot
@@ -53,7 +54,7 @@ class CertificateDAL : DBConnection() {
         val query = GetCertificateRef().orderByChild("userPK").equalTo(user.pk)
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                activity.certiList.clear()
+//                activity.certiList.clear()
                 for (snapshot in dataSnapshot.children) {
                     if (snapshot != null) {
                         val certi = snapshot.getValue(Certificate::class.java)
@@ -61,16 +62,16 @@ class CertificateDAL : DBConnection() {
                             activity.certiList.add(certi)
                         }
                     }
-                    if (activity.certiList.size == 0) {
-                        if (activity.binding.textViewNoCerti?.visibility == View.VISIBLE) {
-                            activity.binding.textViewNoCerti?.visibility = View.GONE
-                        } else {
-                            activity.binding.textViewNoCerti?.visibility = View.VISIBLE
-                        }
-                    } else {
-                        activity.loadUserCertificate()
-                    }
                 }
+
+                if (activity.certiList.size == 0) {
+                    activity.binding.textViewNoCerti?.visibility = View.VISIBLE
+                } else {
+                    activity.binding.textViewNoCerti?.visibility = View.GONE
+                }
+                activity.loadUserCertificate()
+                Log.d("TAG", "Student's certificate : " + user.position)
+
             }
             override fun onCancelled(databaseError: DatabaseError) {
             }

@@ -1,94 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/custom_form_login"
     android:orientation="vertical">
-    <LinearLayout
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:padding="20dp"
-            android:text="Name" />
-
-        <EditText
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_weight="1"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:background="@color/white"
-            android:padding="20dp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+            <EditText
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/name_icon"
+                android:drawablePadding="8dp"
+                android:ems="10"
+                android:inputType="text"
+                android:padding="16dp"
+                android:text="Name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:padding="20dp"
-            android:text="Age" />
+            <EditText
+                android:id="@+id/tvAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/age_icon"
+                android:drawablePadding="8dp"
+                android:ems="10"
+                android:inputType="text"
+                android:padding="16dp"
+                android:text="Name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/tvAge"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:padding="20dp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/tvPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/phone_icon"
+                android:drawablePadding="8dp"
+                android:ems="10"
+                android:inputType="text"
+                android:padding="16dp"
+                android:text="Name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+            <EditText
+                android:id="@+id/tvStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/status_icon"
+                android:drawablePadding="8dp"
+                android:ems="10"
+                android:inputType="text"
+                android:padding="16dp"
+                android:text="Name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:padding="20dp"
-            android:text="Phone Number" />
+    </androidx.cardview.widget.CardView>
 
-        <EditText
-            android:id="@+id/tvPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:padding="20dp"
-            android:textStyle="bold" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:padding="20dp"
-            android:text="Status" />
-
-        <EditText
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:padding="20dp"
-            android:textStyle="bold" />
-    </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,14 +31,11 @@ class AddMultiUserActivity : AppCompatActivity() {
         binding = ActivityAddMultiUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                binding.recyclerView.context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
+        supportActionBar?.title = "Check file content";
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setDisplayShowHomeEnabled(true);
 
+        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         userList = ArrayList<User>()
 
@@ -74,6 +71,10 @@ class AddMultiUserActivity : AppCompatActivity() {
         })
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
     private fun askFileName() {
         val v = this.layoutInflater.inflate(R.layout.ask_filename_dialog, null)

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:background="@drawable/custom_form_login"
+android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:padding="20dp"
+        android:text="Name" />
+
+    <EditText
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:padding="20dp"
+        android:textStyle="bold" />
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:padding="20dp"
+        android:text="Age" />
+
+    <EditText
+        android:id="@+id/tvAge"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:padding="20dp"
+        android:textStyle="bold" />
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:padding="20dp"
+        android:text="Phone Number" />
+
+    <EditText
+        android:id="@+id/tvPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:padding="20dp"
+        android:textStyle="bold" />
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:padding="20dp"
+        android:text="Status" />
+
+    <EditText
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:padding="20dp"
+        android:textStyle="bold" />
+</LinearLayout>
+</LinearLayout>
